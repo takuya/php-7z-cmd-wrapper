@@ -33,11 +33,13 @@ currently, this project aimed at READING archive. write/append not yet.
 
 ### character encodings.
 
-`7z` command will do **nothing** to encoding. So we should take care of encoding in php world.
+`7z` command will encode filenames by shell ENV[LANG].
+So we should take care of encoding using shell env LANG='' and php string.
 
 cp932(jp/windows/filename) example.
 ```php
 $a = new Archive7zReader($f);
+$a->setLang('ja_JP.utf8');
 $file_name = $a->files()[1];
 $file_name =   $name = mb_convert_encoding($file_name,"UTF8","UTF8,CP932");
 ```

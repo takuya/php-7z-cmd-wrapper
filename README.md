@@ -7,12 +7,12 @@
 ## requirements
 
 ```
-sudo apt list p7zip-full
+sudo apt install p7zip-full
 ```
 
 rar will be installed as non-free
 ```
-sudo apt list p7zip-rar # debian non-free
+sudo apt install p7zip-rar # debian non-free
 ```
 ## usage 
 Access with file name.

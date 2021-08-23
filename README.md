@@ -45,7 +45,7 @@ $a->setLang('ja_JP.UTF8');
 $file_name = $a->files()[1];
 $file_name =   $name = mb_convert_encoding($file_name,"UTF8","UTF8,CP932");
 ```
-cp932(jp/windows/filename) example. #01 using cp932
+cp932(jp/windows/filename) example. #02 using cp932
 ```php
 $a = new Archive7zReader($f);
 $a->setLang('ja_JP.SJIS');

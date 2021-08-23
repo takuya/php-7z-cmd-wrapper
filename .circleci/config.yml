@@ -31,6 +31,11 @@ jobs:
       # Specify the version you desire here
       - image: circleci/php:8-cli
     steps:
+      - run:
+          shell: /bin/bash
+          command:
+            sudo apt-get update;
+            sudo apt-get install -y --no-install-recommends p7zip-full;
       - checkout
       - run:
           shell: /bin/bash
@@ -44,6 +49,11 @@ jobs:
       # Specify the version you desire here
       - image: circleci/php:7.4.3-cli
     steps:
+      - run:
+          shell: /bin/bash
+          command:
+            sudo apt-get update;
+            sudo apt-get install -y --no-install-recommends p7zip-full;
       - checkout
       - run:
           shell: /bin/bash
@@ -61,7 +71,7 @@ jobs:
           shell: /bin/bash
           command:
             apt-get update;
-            apt-get install -y --no-install-recommends git vim-nox sudo;
+            apt-get install -y --no-install-recommends git vim-nox sudo p7zip-full;
       - run:
           shell: /bin/bash
           command: |

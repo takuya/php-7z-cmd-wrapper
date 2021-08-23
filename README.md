@@ -36,7 +36,7 @@ currently, this project aimed at READING archive. write/append not yet.
 ### character encodings.
 
 `7z` command will encode filenames by shell ENV[LANG].
-So we should take care of encoding using shell env LANG='' and php string.
+So we should take care of encoding using shell env LANG='XXX' and php mb_string.
 
 cp932(jp/windows/filename) example. #01 using utf8 
 ```php

@@ -33,7 +33,7 @@ $bin = $a7z->at(0);
 currently, this project aimed at READING archive. write/append not yet.
 
 
-### character encodings.
+### character encodings.(reading archive)
 
 `7z` command will encode filenames by shell ENV[LANG].
 So we should take care of encoding using shell env LANG='XXX' and php mb_string.

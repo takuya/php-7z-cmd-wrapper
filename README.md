@@ -54,6 +54,17 @@ $file_name =   $name = mb_convert_encoding($file_name,"UTF8","CP932");
 ```
 
 
+## Installation from github 
+```
+repo=git@github.com:takuya/php-7z-cmd-wrapper.git
+composer config repositories.takuya/php-7z-cmd-wrapper vcs $repo
+composer require takuya/php-7z-cmd-wrapper
+```
+
+## Installation from packagist
+```
+composre require takuya/php-7z-cmd-wrapper
+```
 
 
 

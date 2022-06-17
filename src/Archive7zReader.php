@@ -2,54 +2,42 @@
 
 namespace SystemUtil\Archiver;
 
-use SystemUtil\Process;
-
-class Archive7zReader {
+class Archive7zReader  {
   
-  public static $command;
   protected $list;
   protected $_LANG;
+  /**
+   * @var string
+   */
+  protected $f_name;
   
   public function setLang($lang){
     $this->_LANG =$lang;
   }
   
-  public function __construct ($f) {
-    $this->f_name =  realpath($f) ?: null;
-    static::$command = static::$command ?? '7z';
+  public function __construct (string $filename) {
+    $this->f_name =  realpath($filename) ?: null;
+    Archive7zWrapper::$command = Archive7zWrapper::$command ?? '7z';
   }
-  public function at($index){
+  public function at($index):string {
     $files = $this->files();
     if ( !array_key_exists($index,$files)){
-      throw new \InvalidArgumentException('$index is not found or $index points a directory');
+      throw new \InvalidArgumentException('$index is not found or $index points to a directory');
     }
     $name = $files[$index];
     return $this->content($name);
   }
-  public function content($name){
-    $ret = static::extract($this->f_name,$name,$this->_LANG?['LANG'=>$this->_LANG]:[]);
+  public function content($name):string{
+    $ret = Archive7zWrapper::extract($this->f_name, $name, $this->_LANG?['LANG' =>$this->_LANG]:[]);
     return $ret;
   }
-  public function hasFolder(){
+  public function hasFolder():bool {
     $list = $this->list();
     return sizeof( array_filter($list,function($item){
       return preg_match('/D/', $item['Attr']);
     })) > 0;
   }
-  protected static function list7z($file_path, $env=[]){
-    // TODO:: move to static class
-    $proc = new Process([static::$command,'l','-ba', $file_path], $env);
-    $proc->run();
-    $ret = $proc->getOutput();
-    return $ret;
-  }
-  public static function extract($file_path,$name, $env=null){
-    $proc = new Process([static::$command,'-so','x', $file_path, $name],$env);
-    $proc->run();
-    $ret = $proc->getOutput();
-    return $ret;
-  }
-  public function files(){
+  public function files():array {
     $list = $this->list();
     return array_map(function($e){
       return $e['Name'];
@@ -59,18 +47,17 @@ class Archive7zReader {
     ;
   }
   
-  public function list() {
+  public function list():array {
     if( $this->list ){
       return $this->list;
     }
-    $ret = static::list7z($this->f_name,$this->_LANG?['LANG'=>$this->_LANG]:[]);
-    //dd($proc->getCommandLine());
+    $ret = Archive7zWrapper::list7z($this->f_name,$this->_LANG?['LANG'=>$this->_LANG]:[]);
     $string_io = new \SplFileObject('php://memory','w+');
     $string_io->fwrite($ret);
     $list = $this->parseList($string_io);
     return $this->list= $list;
   }
-  protected function parseList( \SplFileObject $sio){
+  protected function parseList( \SplFileObject $sio):array {
     $list = [];
     foreach ( $sio as $line ) {
       if (empty($line)){

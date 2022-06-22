@@ -4,7 +4,6 @@ namespace SystemUtil\Archiver;
 
 class Archive7zReader  {
   
-  protected $list;
   protected $_LANG;
   /**
    * @var string
@@ -47,14 +46,11 @@ class Archive7zReader  {
   }
   
   public function list():array {
-    if( $this->list ){
-      return $this->list;
-    }
     $ret = Archive7zWrapper::list7z($this->f_name,$this->_LANG?['LANG'=>$this->_LANG]:[]);
     $string_io = new \SplFileObject('php://memory','w+');
     $string_io->fwrite($ret);
     $list = $this->parseList($string_io);
-    return $this->list= $list;
+    return $list;
   }
   protected function parseList( \SplFileObject $sio):array {
     $list = [];

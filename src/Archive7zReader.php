@@ -14,7 +14,7 @@ class Archive7zReader  {
   public function setLang($lang){
     $this->_LANG =$lang;
   }
-  public function __construct (string $filename) {
+  public function __construct (\string $filename) {
     $this->f_name =  realpath($filename) ?: null;
     Archive7zWrapper::$command = Archive7zWrapper::$command ?? '7z';
   }

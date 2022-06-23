@@ -18,8 +18,14 @@ class Archive7zWrapper {
     $ret = $proc->getOutput();
     return $ret;
   }
-  public static function extensions(){
+  public static function extensions($pattern="tar|zip|rar|7z|^lz|cpio|cab"){
     $ret = static::supported_type();
+    foreach ($ret as $k=>$v) {
+      unset($ret[$k]);
+      if (preg_match("/{$pattern}/i",$k)){
+        $ret[strtolower($k)]=$v;
+      }
+    }
     $ext = [];
     array_walk_recursive($ret,function ($e)use(&$ext){$ext[]=$e; });
     $ext = array_map('trim',$ext);
@@ -37,16 +43,10 @@ class Archive7zWrapper {
     $ret = array_map(function ($str){
       $format = trim(substr($str, 19,9));
       $info = substr($str, 28);
-      preg_match_all('/[a-z][a-z0-9]+\s|7z/', $info,$m);
+      preg_match_all('/[a-z][a-z0-9]+\s|7z\s/', $info,$m);
       return [$format,$m[0]];}
       ,$ret);
     $ret = array_reduce($ret, function($s,$e){$s[$e[0]]=$e[1];return $s;},[]);
-    foreach ($ret as $k=>$v) {
-      unset($ret[$k]);
-      if (preg_match('/zip|rar|7z|^lz|cpio|cab/i',$k)){
-        $ret[strtolower($k)]=$v;
-      }
-    }
     return $ret;
   }
 }

@@ -40,9 +40,25 @@ class Archive7zWrapper {
     preg_match_all('/Formats:(.*)Codecs:/s',$output,$matches);
     $ret = preg_split('/\n/', $matches[1][0]);
     $ret = array_filter($ret);
+    // 
+    $bin = array_map(function($e){ return preg_split('//',$e);},$ret);
+    $bin = array_map(function($e){ return array_map('trim',$e);},$bin);
+    $bin = array_map(function($e){ return array_map(function($f){return empty($f)?'0':'1';},$e);},$bin);
+    $bin = array_map(function($e){ return join('',$e);},$bin);
+    $bin = array_map(function($e){ return substr($e,0,24);},$bin);
+    $bin = array_map(function($e){ return bindec($e);},$bin);
+    $str_true = str_replace(',','',"1111,1111,1111,1111,1111,1111");
+    $bin = array_reduce( $bin, function($ret, $e ){return $ret & $e; },bindec($str_true));
+    $start = strpos(sprintf('%024s', decbin($bin)),'1');
+    //
+    $ret = array_map(function($str)use($start){
+      return substr($str,$start-1);
+    },$ret);
+
+
     $ret = array_map(function ($str){
-      $format = trim(substr($str, 19,9));
-      $info = substr($str, 28);
+      $format = trim(substr($str, 0,9));
+      $info = substr($str, 9);
       preg_match_all('/[a-z][a-z0-9]+\s|7z\s/', $info,$m);
       return [$format,$m[0]];}
       ,$ret);

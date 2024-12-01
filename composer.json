@@ -20,9 +20,6 @@
         "larapack/dd": "^1.1"
     },
     "autoload-dev": {
-        "files": [
-            "Helpers/helpers.php"
-        ],
         "psr-4":{
             "Tests\\": "tests/"
         }

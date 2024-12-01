@@ -1,0 +1,52 @@
+name: main
+
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron:  '5 5 * * *'
+jobs:
+  run-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: apt install
+        shell: bash
+        run: |
+          apt update 
+          apt install p7zip-full
+      - name : composer install
+        shell: bash
+        run : |
+          php -v
+          composer install  -q --no-ansi --no-interaction --no-progress
+      - name : phpunit
+        shell: bash
+        run : |
+          vendor/bin/phpunit
+      - name : log
+        shell: bash
+        run : |
+          date -I > last-tested.txt
+      - name: push updated lists
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: update tested date.
+  run-composer-install:
+    runs-on: ubuntu-latest
+    steps:
+      - name:  installation
+        shell: bash
+        run: |
+          php -v
+          composre require takuya/php-7z-cmd-wrapper
+          cat <<'EOS' > sample.php
+          <?php
+          require_once 'vendor/autoload.php';
+          use SystemUtil\Archiver\Archive7zWrapper;
+          echo Archive7zWrapper::help();
+          EOS
+          cat sample.php
+          php sample.php

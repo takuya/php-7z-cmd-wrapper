@@ -1,5 +1,5 @@
 ## 7-Zip command wrapper for reading
-![<CircleciTest>](https://circleci.com/gh/takuya/php-7z-cmd-wrapper.svg?style=svg)
+![](https://github.com/takuya/php-7z-cmd-wrapper/workflows/main/badge.svg)
 
 
 7z command supports several type of archive. 

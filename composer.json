@@ -3,7 +3,7 @@
     "description": "7z Archiver Command Wrapper",
     "license": "GPL-3.0-or-later",
     "type": "library",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "autoload": {
         "psr-4": {
             "SystemUtil\\Archiver\\": "src/"

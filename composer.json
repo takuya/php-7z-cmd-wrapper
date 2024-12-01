@@ -8,9 +8,7 @@
         "psr-4": {
             "SystemUtil\\Archiver\\": "src/"
         },
-        "exclude-from-classmap": [
-            "tests/*","Helpers/*"
-        ]
+        "exclude-from-classmap": ["tests/*"]
     },
     "require": {
         "php": ">=7.3",

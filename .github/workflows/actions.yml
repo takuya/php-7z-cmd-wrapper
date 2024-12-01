@@ -41,7 +41,7 @@ jobs:
         shell: bash
         run: |
           php -v
-          composre require takuya/php-7z-cmd-wrapper
+          composer require takuya/php-7z-cmd-wrapper
           cat <<'EOS' > sample.php
           <?php
           require_once 'vendor/autoload.php';

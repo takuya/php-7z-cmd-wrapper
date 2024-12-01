@@ -4,13 +4,13 @@ on:
   push:
     branches:
       - master
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - '.github/workflows/actions.yml'
+      - 'composer.json'
   schedule:
     - cron:  '5 5 */7 * *'
-  paths:
-    - 'src/**'
-    - 'tests/**'
-    - '.github/workflows/actions.yml'
-    - 'composer.json'
 jobs:
   run-test:
     runs-on: ubuntu-latest

@@ -6,6 +6,9 @@ use Takuya\ProcOpen\ProcOpen;
 
 class Archive7zWrapper {
   public static $command = '7z';
+  public static function help($env=[]){
+    return static::run('--help',$env);
+  }
   public static function run($opts,$env=[]){
     $opts = is_array($opts) ? $opts : [$opts];
     $cmd = array_merge([static::$command],$opts);

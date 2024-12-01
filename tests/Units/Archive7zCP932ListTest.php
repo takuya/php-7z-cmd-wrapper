@@ -4,6 +4,7 @@ namespace Tests\Units;
 
 use Tests\TestCase;
 use SystemUtil\Archiver\Archive7zReader;
+use SystemUtil\Archiver\Archive7zWrapper;
 
 class Archive7zCP932ListTest extends TestCase {
   public function test_cp932_zip(){
@@ -26,6 +27,12 @@ class Archive7zCP932ListTest extends TestCase {
     $this->assertStringContainsString('日本語',$file_name);
   }
   public function test_zip_cp932_with_environment_variable_C_to_text(){
+    $str = Archive7zWrapper::help(['LANG'=>'C']);
+    $ret = preg_grep('/locale=C/m',explode(PHP_EOL,$str));
+    if(empty($ret)){
+      $this->markTestSkipped('this shell 7z environment dose not support LANG=C ');
+    }
+    //
     $f = __DIR__.DIRECTORY_SEPARATOR.'../sample-data/sample-japanese-cp932-utf8.zip';
     $a = new Archive7zReader($f);
     $a->setLang('C');

@@ -15,8 +15,8 @@ jobs:
       - name: apt install
         shell: bash
         run: |
-          apt update 
-          apt install p7zip-full
+          sudo apt update 
+          sudo apt install p7zip-full
       - name : composer install
         shell: bash
         run : |

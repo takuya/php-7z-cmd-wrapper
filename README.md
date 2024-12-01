@@ -19,7 +19,7 @@ Access with file name.
 ```php
 $a7z = new Archive7zReader("sample.zip");
 foreach( $a7z->files() as $name) {
-    $bin = $a7z->conent($name);
+  $bin = $a7z->content($name);
 }
 ```
 Access with index.

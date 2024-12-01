@@ -2,21 +2,22 @@
 
 namespace SystemUtil\Archiver;
 
-use SystemUtil\Process;
+use Takuya\ProcOpen\ProcOpen;
 
 class Archive7zWrapper {
   public static $command = '7z';
+  public static function run($opts,$env=[]){
+    $opts = is_array($opts) ? $opts : [$opts];
+    $cmd = array_merge([static::$command],$opts);
+    $popen = new ProcOpen($cmd,null,$env);
+    $popen->start();
+    return stream_get_contents($popen->stdout());
+  }
   public static function extract($file_path,$name, $env=null):string {
-    $proc = new Process([static::$command,'-so','x', $file_path, $name],$env);
-    $proc->run();
-    $ret = $proc->getOutput();
-    return $ret;
+    return static::run(['-so','x', $file_path, $name],$env);
   }
   public static function list7z($file_path, $env=[]):string {
-    $proc = new Process([Archive7zWrapper::$command,'l','-ba', $file_path], $env);
-    $proc->run();
-    $ret = $proc->getOutput();
-    return $ret;
+    return static::run(['l','-ba', $file_path],$env);
   }
   public static function extensions($pattern="tar|zip|rar|7z|^lz|cpio|cab"){
     $ret = static::supported_type();
@@ -34,9 +35,7 @@ class Archive7zWrapper {
     return $ext;
   }
   public static function supported_type() {
-    $proc = new Process([Archive7zWrapper::$command,'i']);
-    $proc->run();
-    $output = $proc->getOutput();
+    $output = static::run('i');
     preg_match_all('/Formats:(.*)Codecs:/s',$output,$matches);
     $ret = preg_split('/\n/', $matches[1][0]);
     $ret = array_filter($ret);

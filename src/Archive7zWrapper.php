@@ -31,11 +31,12 @@ class Archive7zWrapper {
       }
     }
     $ext = [];
+    dump($ret);
     array_walk_recursive($ret,function ($e)use(&$ext){$ext[]=$e; });
     $ext = array_map('trim',$ext);
     $ext = array_unique($ext);
     $ext = array_diff($ext,['apk','appx',"lzma86"]);
-      dd($ret,$ext);
+    dd($ret,$ext);
     return $ext;
   }
   public static function supported_type() {

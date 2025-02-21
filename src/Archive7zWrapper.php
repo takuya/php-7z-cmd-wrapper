@@ -24,15 +24,6 @@ class Archive7zWrapper {
   }
   public static function extensions($pattern="tar|zip|rar|7z|^lz|cpio|cab"){
     $ret = static::supported_type();
-    dump($ret);
-    foreach ($ret as $k=>$v) {
-      unset($ret[$k]);
-      if (preg_match("/{$pattern}/i",$k)){
-        $ret[strtolower($k)]=$v;
-      }
-    }
-    $ext = [];
-    dump($ret);
     array_walk_recursive($ret,function ($e)use(&$ext){$ext[]=$e; });
     $ext = array_map('trim',$ext);
     $ext = array_unique($ext);

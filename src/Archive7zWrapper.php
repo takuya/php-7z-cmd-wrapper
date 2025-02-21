@@ -24,6 +24,7 @@ class Archive7zWrapper {
   }
   public static function extensions($pattern="tar|zip|rar|7z|^lz|cpio|cab"){
     $ret = static::supported_type();
+    dump($ret);
     foreach ($ret as $k=>$v) {
       unset($ret[$k]);
       if (preg_match("/{$pattern}/i",$k)){

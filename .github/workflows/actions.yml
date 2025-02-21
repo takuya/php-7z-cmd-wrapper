@@ -21,7 +21,10 @@ jobs:
         shell: bash
         run: |
           sudo apt update 
-          sudo apt install p7zip-full 7zip p7zip p7zip-rar
+          sudo apt install 7zip
+          sudo apt install p7zip
+          sudo apt install p7zip-full
+          sudo apt install p7zip-rar
       - name : composer install
         shell: bash
         run : |

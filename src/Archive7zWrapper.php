@@ -32,6 +32,7 @@ class Archive7zWrapper {
   }
   public static function supported_type() {
     $output = static::run('i');
+    dump($output);
     preg_match_all('/Formats:(.*)Codecs:/s',$output,$matches);
     $ret = preg_split('/\n/', $matches[1][0]);
     $ret = array_filter($ret);

@@ -30,7 +30,7 @@ jobs:
       - name : phpunit
         shell: bash
         run : |
-          vendor/bin/phpunit --filter test_list_supported
+          vendor/bin/phpunit
       - name : log
         shell: bash
         run : |

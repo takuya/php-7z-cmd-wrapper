@@ -30,28 +30,19 @@ class Archive7zWrapper {
     $ext = array_diff($ext,['apk','appx',"lzma86"]);
     return $ext;
   }
-  public static function supported_type() {
-    $output = static::run('i');
-    dump($output);
+  public static function parse_supported_type($output){
     preg_match_all('/Formats:(.*)Codecs:/s',$output,$matches);
     $ret = preg_split('/\n/', $matches[1][0]);
-    $ret = array_filter($ret);
-    // 
-    $bin = array_map(function($e){ return preg_split('//',$e);},$ret);
-    $bin = array_map(function($e){ return array_map('trim',$e);},$bin);
-    $bin = array_map(function($e){ return array_map(function($f){return empty($f)?'0':'1';},$e);},$bin);
-    $bin = array_map(function($e){ return join('',$e);},$bin);
-    $bin = array_map(function($e){ return substr($e,0,24);},$bin);
-    $bin = array_map(function($e){ return bindec($e);},$bin);
-    $str_true = str_replace(',','',"1111,1111,1111,1111,1111,1111");
-    $bin = array_reduce( $bin, function($ret, $e ){return $ret & $e; },bindec($str_true));
-    $start = strpos(sprintf('%024s', decbin($bin)),'1');
+    $ret = array_values(array_filter($ret));
     //
-    $ret = array_map(function($str)use($start){
-      return substr($str,$start-1);
-    },$ret);
-
-
+    $ret = array_map(function ($e){
+      return preg_match('/m\+/',$e)? preg_replace('/ w.{5} /','  ',$e):$e;
+      },$ret);
+    $ret = array_map(function($e){ return str_replace('.',' ',$e);},$ret);
+    $ret = array_map('trim',$ret);
+    $ret = array_map(function($e){ return str_replace('m+','  ',$e ); },$ret);
+    $pos = strpos($ret[0],'  7z',);
+    $ret = array_map(function($e)use($pos){ return substr($e,$pos); },$ret);
     $ret = array_map(function ($str){
       $format = trim(substr($str, 0,9));
       $info = substr($str, 9);
@@ -59,6 +50,12 @@ class Archive7zWrapper {
       return [$format,$m[0]];}
       ,$ret);
     $ret = array_reduce($ret, function($s,$e){$s[$e[0]]=$e[1];return $s;},[]);
+    $ret = array_map(function ($e){ return array_map('trim',$e); },$ret);
     return $ret;
+    
+  }
+  public static function supported_type() {
+    $output = static::run('i');
+    return self::parse_supported_type($output);
   }
 }

@@ -24,7 +24,6 @@ class Archive7zWrapper {
   }
   public static function extensions($pattern="tar|zip|rar|7z|^lz|cpio|cab"){
     $ret = static::supported_type();
-    dd($ret);
     foreach ($ret as $k=>$v) {
       unset($ret[$k]);
       if (preg_match("/{$pattern}/i",$k)){
@@ -36,6 +35,7 @@ class Archive7zWrapper {
     $ext = array_map('trim',$ext);
     $ext = array_unique($ext);
     $ext = array_diff($ext,['apk','appx',"lzma86"]);
+      dd($ret,$ext);
     return $ext;
   }
   public static function supported_type() {

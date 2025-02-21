@@ -22,13 +22,12 @@ class Archive7zWrapper {
   public static function list7z($file_path, $env=[]):string {
     return static::run(['l','-ba', $file_path],$env);
   }
-  public static function extensions($pattern="tar|zip|rar|7z|^lz|cpio|cab"){
+  public static function extensions(){
     $ret = static::supported_type();
     array_walk_recursive($ret,function ($e)use(&$ext){$ext[]=$e; });
     $ext = array_map('trim',$ext);
     $ext = array_unique($ext);
     $ext = array_diff($ext,['apk','appx',"lzma86"]);
-    dd($ret,$ext);
     return $ext;
   }
   public static function supported_type() {
